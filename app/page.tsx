@@ -1,4 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
+import { brandLogo } from "@/lib/images";
+import { lookFor } from "@/lib/looks";
+import { WatchIllustration } from "@/components/WatchIllustration";
 import { PRODUCTS, BRANDS } from "@/data/products";
 import { SERVICES } from "@/data/services";
 import { ProductCard } from "@/components/ProductCard";
@@ -10,15 +14,37 @@ export default function Home() {
   const preOwned = PRODUCTS.filter((p) => p.condition === "pre-owned").slice(0, 3);
   return (
     <>
+      <nav aria-label="Shop by" className="bg-white border-b border-ink/10">
+        <ul className="mx-auto max-w-[1280px] grid grid-cols-4 text-center text-sm tracking-widest uppercase">
+          {[["All", "/shop"], ["Men", "/shop?gender=men"], ["Women", "/shop?gender=women"], ["Pre-owned", "/outlet"]].map(([label, href]) => (
+            <li key={label}><Link href={href} className="block py-4 hover:text-bronze">{label}</Link></li>
+          ))}
+        </ul>
+      </nav>
+
       <section className="bg-ink text-paper">
-        <div className="mx-auto max-w-[1280px] px-4 py-20 grid gap-6">
-          <h1 className="font-display text-4xl md:text-6xl max-w-3xl">Time well kept, bought well, mended right.</h1>
-          <p className="text-paper/80 max-w-xl">{SITE.tagline}. Browse new and pre-owned pieces, or book a repair and follow it every step of the way.</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/shop" className="bg-bronze text-ink px-6 py-3 font-medium min-h-11">Shop watches</Link>
-            <Link href="/repairs/book" className="border border-paper px-6 py-3 font-medium min-h-11">Book a repair</Link>
+        <div className="mx-auto max-w-[1280px] px-4 py-12 md:py-20 grid gap-8 md:grid-cols-2 items-center">
+          <div className="grid gap-6">
+            <h1 className="font-display text-4xl md:text-6xl">Time well kept, bought well, mended right.</h1>
+            <p className="text-paper/80 max-w-xl">{SITE.tagline}. Browse new and pre-owned pieces, or book a repair and follow it every step of the way.</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/shop" className="bg-bronze text-ink px-6 py-3 font-medium min-h-11">Shop watches</Link>
+              <Link href="/repairs/book" className="border border-paper px-6 py-3 font-medium min-h-11">Book a repair</Link>
+            </div>
+          </div>
+          <div className="max-w-md w-full justify-self-center aspect-square" aria-hidden="true">
+            <WatchIllustration look={lookFor("tissot-prx-35")} category="watch" slug="tissot-prx-35" />
           </div>
         </div>
+      </section>
+
+      <section aria-label="Why shop with us" className="bg-white border-b border-ink/10">
+        <ul className="mx-auto max-w-[1280px] px-4 py-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 text-sm uppercase tracking-wide">
+          <li>New and graded pre-owned</li>
+          <li>Track your repair online</li>
+          <li>{SITE.warrantyDays}-day workshop warranty</li>
+          <li>Quote approved before any work</li>
+        </ul>
       </section>
 
       <section className="mx-auto max-w-[1280px] px-4 py-12" aria-labelledby="featured">
@@ -55,9 +81,16 @@ export default function Home() {
       <section className="mx-auto max-w-[1280px] px-4 pb-16">
         <h2 className="font-display text-xl mb-3">Brands</h2>
         <ul className="flex flex-wrap gap-2">
-          {BRANDS.map((b) => (
-            <li key={b}><Link href={`/shop?brand=${encodeURIComponent(b)}`} className="inline-block border border-ink/30 px-3 py-2 text-sm">{b}</Link></li>
-          ))}
+          {BRANDS.map((b) => {
+            const logo = brandLogo(b);
+            return (
+              <li key={b}>
+                <Link href={`/shop?brand=${encodeURIComponent(b)}`} className="inline-flex items-center justify-center border border-ink/30 bg-white px-3 py-2 text-sm min-h-11 min-w-24">
+                  {logo ? <Image src={logo} alt={b} width={96} height={32} className="h-8 w-auto object-contain" /> : b}
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </section>
     </>

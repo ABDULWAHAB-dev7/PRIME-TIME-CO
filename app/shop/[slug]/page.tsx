@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { getProduct, PRODUCTS } from "@/data/products";
 import { formatPrice } from "@/lib/format";
 import { SITE } from "@/lib/config";
+import { productImage } from "@/lib/images";
+import { WatchImage } from "@/components/WatchImage";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -22,9 +24,7 @@ export default async function ProductPage({ params }: Props) {
   const preOwned = p.condition === "pre-owned";
   return (
     <div className="mx-auto max-w-[1280px] px-4 py-10 grid gap-8 md:grid-cols-2">
-      <div aria-hidden="true" className="aspect-square bg-ink text-bronze grid place-items-center font-display text-9xl">
-        {p.category === "clock" ? "◷" : "⌚"}
-      </div>
+      <WatchImage src={productImage(p.slug)} alt={`${p.brand} ${p.name}`} category={p.category} slug={p.slug} priority />
       <div className="grid gap-4 content-start">
         <p className="text-xs uppercase tracking-widest text-ink/60">{p.brand}</p>
         <h1 className="font-display text-4xl">{p.name}</h1>

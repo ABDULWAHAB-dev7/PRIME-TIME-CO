@@ -24,3 +24,12 @@ npm run build
 Cart and checkout, database wiring and seed, public tracking and quote approval, admin repair queue, marketplace.
 
 Layer rule: `domain/` imports nothing from `app/`, `components/` or `lib/`.
+
+## Images
+
+Drop your own (or dealer-supplied) images in `public/` and they appear automatically:
+
+- Product photos: `public/products/<product-slug>.webp` (or jpg, png, avif). Slugs are in `data/products.ts`, e.g. `tissot-prx-35`.
+- Brand logos: `public/brands/<brand-name>.svg` in lowercase, e.g. `seiko.svg`, `tissot.png`.
+
+Only use images you own or are licensed to use (for example an official dealer pack).
